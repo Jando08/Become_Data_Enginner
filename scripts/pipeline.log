@@ -1,0 +1,7 @@
+2026-08-03 10:52:12 - INFO - === INICIANDO EJECUCIÓN DEL PIPELINE ETL ===
+2026-08-03 10:52:12 - INFO - Iniciando extracción de datos desde la API...
+2026-08-03 10:52:13 - INFO - ✅ Datos extraídos correctamente de la fuente.
+2026-08-03 10:52:13 - INFO - Iniciando transformación de datos con Pandas...
+2026-08-03 10:52:13 - INFO - ✅ Transformación completada exitosamente.
+2026-08-03 10:52:13 - INFO - 🚀 Respaldo local guardado exitosamente en: datos_procesados/pipeline_final.csv
+2026-08-03 10:52:13 - INFO - === PIPELINE ETL FINALIZADO CON ÉXITO ===
