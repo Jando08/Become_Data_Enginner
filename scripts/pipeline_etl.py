@@ -22,10 +22,10 @@ def extraer_datos(url: str) -> dict:
     try:
         respuesta = requests.get(url, timeout=10)
         respuesta.raise_for_status() # Lanza excepción si el código de estado no es 200
-        logging.info("✅ Datos extraídos correctamente de la fuente.")
+        logging.info("Datos extraídos correctamente de la fuente.")
         return respuesta.json()
     except requests.exceptions.RequestException as e:
-        logging.error(f"❌ Fallo crítico en la extracción de datos: {e}")
+        logging.error(f"Fallo crítico en la extracción de datos: {e}")
         raise
 
 def transformar_datos(datos_raw: dict) -> pd.DataFrame:
@@ -37,18 +37,18 @@ def transformar_datos(datos_raw: dict) -> pd.DataFrame:
             'userId': 'usuario_id',
             'title': 'titulo'
         })
-        logging.info("✅ Transformación completada exitosamente.")
+        logging.info("Transformación completada exitosamente.")
         return df_limpio
     except Exception as e:
-        logging.error(f"❌ Error durante la transformación de datos: {e}")
+        logging.error(f"Error durante la transformación de datos: {e}")
         raise
 
 def cargar_datos_csv(df: pd.DataFrame, ruta_destino: str) -> None:
     try:
         df.to_csv(ruta_destino, index=False, encoding="utf-8")
-        logging.info(f"🚀 Respaldo local guardado exitosamente en: {ruta_destino}")
+        logging.info(f"Respaldo local guardado exitosamente en: {ruta_destino}")
     except Exception as e:
-        logging.error(f"❌ Error al guardar archivo CSV local: {e}")
+        logging.error(f"Error al guardar archivo CSV local: {e}")
 
 def main():
     logging.info("=== INICIANDO EJECUCIÓN DEL PIPELINE ETL ===")
@@ -61,7 +61,7 @@ def main():
         cargar_datos_csv(df_procesado, RUTA_CSV)
         logging.info("=== PIPELINE ETL FINALIZADO CON ÉXITO ===")
     except Exception as e:
-        logging.critical(f"💥 El pipeline ETL falló y no pudo completar la ejecución: {e}")
+        logging.critical(f"El pipeline ETL falló y no pudo completar la ejecución: {e}")
 
 if __name__ == "__main__":
     main()
