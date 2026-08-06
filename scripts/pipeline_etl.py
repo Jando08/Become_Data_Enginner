@@ -3,7 +3,8 @@ import logging
 import requests
 import pandas as pd
 from dotenv import load_dotenv
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData, Table
+from sqlalchemy.dialects.postgresql import insert
 
 # Configuración de Logs
 logging.basicConfig(
@@ -49,8 +50,8 @@ def cargar_datos_csv(df: pd.DataFrame, ruta_destino: str) -> None:
     except Exception as e:
         logging.error(f"Error al guardar archivo CSV local: {e}")
 
-def cargar_datos_postgres(df: pd.DataFrame, nombre_tabla: str) -> None:
-    logging.info(f"Iniciando carga a PostgreSQL en la tabla '{nombre_tabla}'...")
+def cargar_datos_upsert(df: pd.DataFrame, nombre_tabla: str) -> None:
+    logging.info(f"Iniciando carga inteligente (UPSERT) en '{nombre_tabla}'...")
     try:
         user = os.getenv("DB_USER")
         password = os.getenv("DB_PASSWORD")
@@ -62,11 +63,31 @@ def cargar_datos_postgres(df: pd.DataFrame, nombre_tabla: str) -> None:
         db_url = f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
         engine = create_engine(db_url)
 
-        # Carga del DataFrame a SQL
-        df.to_sql(nombre_tabla, con=engine, if_exists='append', index=False)
-        logging.info(f"Datos cargados exitosamente en PostgreSQL (Tabla: {nombre_tabla}).")
+        # Convertimos el DataFrame a una lista de diccionarios
+        registros = df.to_dict(orient='records')
+
+        metadata = MetaData()
+        tabla = Table(nombre_tabla, metadata, autoload_with=engine)
+
+        with engine.begin() as conexion:
+            for registro in registros:
+                # Sentencia INSERT con cláusula ON CONFLICT
+                stmt = insert(tabla).values(registro)
+
+                # Estrategia: Si hay conflicto en 'id', actualiza las columnas
+                upsert_stmt = stmt.on_conflict_do_update(
+                    index_elements=['id'],  # Columna que tiene la PK o UNIQUE constraint
+                    set_={
+                        'usuario_id': stmt.excluded.usuario_id,
+                        'titulo': stmt.excluded.titulo,
+                        'estado_texto': stmt.excluded.estado_texto
+                    }
+                )
+                conexion.execute(upsert_stmt)
+
+        logging.info("Carga UPSERT completada. Registros creados o actualizados sin errores.")
     except Exception as e:
-        logging.error(f"Error al cargar datos en PostgreSQL: {e}")
+        logging.error(f"Error en la carga UPSERT: {e}")
         raise
 
 def main():
@@ -81,7 +102,7 @@ def main():
         
         # Carga Dual: Respaldo CSV + Carga SQL
         cargar_datos_csv(df_procesado, RUTA_CSV)
-        cargar_datos_postgres(df_procesado, NOMBRE_TABLA_SQL)
+        cargar_datos_upsert(df_procesado, NOMBRE_TABLA_SQL)
         
         logging.info("=== PIPELINE ETL FINALIZADO CON ÉXITO ===")
     except Exception as e:
