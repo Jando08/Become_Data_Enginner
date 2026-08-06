@@ -1,12 +1,11 @@
 import os
-import json
 import logging
 import requests
 import pandas as pd
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 
-# 1. CONFIGURACIÓN DEL SISTEMA DE LOGS
+# Configuración de Logs
 logging.basicConfig(
     filename='pipeline.log',
     level=logging.INFO,
@@ -50,15 +49,40 @@ def cargar_datos_csv(df: pd.DataFrame, ruta_destino: str) -> None:
     except Exception as e:
         logging.error(f"Error al guardar archivo CSV local: {e}")
 
+def cargar_datos_postgres(df: pd.DataFrame, nombre_tabla: str) -> None:
+    logging.info(f"Iniciando carga a PostgreSQL en la tabla '{nombre_tabla}'...")
+    try:
+        user = os.getenv("DB_USER")
+        password = os.getenv("DB_PASSWORD")
+        host = os.getenv("DB_HOST", "localhost")
+        port = os.getenv("DB_PORT", "5432")
+        dbname = os.getenv("DB_NAME")
+
+        # Construcción segura de la cadena de conexión
+        db_url = f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
+        engine = create_engine(db_url)
+
+        # Carga del DataFrame a SQL
+        df.to_sql(nombre_tabla, con=engine, if_exists='append', index=False)
+        logging.info(f"Datos cargados exitosamente en PostgreSQL (Tabla: {nombre_tabla}).")
+    except Exception as e:
+        logging.error(f"Error al cargar datos en PostgreSQL: {e}")
+        raise
+
 def main():
     logging.info("=== INICIANDO EJECUCIÓN DEL PIPELINE ETL ===")
     URL_API = "https://jsonplaceholder.typicode.com/todos/1"
     RUTA_CSV = "datos_procesados/pipeline_final.csv"
+    NOMBRE_TABLA_SQL = "tareas_procesadas"
 
     try:
         raw_data = extraer_datos(URL_API)
         df_procesado = transformar_datos(raw_data)
+        
+        # Carga Dual: Respaldo CSV + Carga SQL
         cargar_datos_csv(df_procesado, RUTA_CSV)
+        cargar_datos_postgres(df_procesado, NOMBRE_TABLA_SQL)
+        
         logging.info("=== PIPELINE ETL FINALIZADO CON ÉXITO ===")
     except Exception as e:
         logging.critical(f"El pipeline ETL falló y no pudo completar la ejecución: {e}")

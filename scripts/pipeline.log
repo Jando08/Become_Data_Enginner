@@ -5,3 +5,59 @@
 2026-08-03 10:52:13 - INFO - ✅ Transformación completada exitosamente.
 2026-08-03 10:52:13 - INFO - 🚀 Respaldo local guardado exitosamente en: datos_procesados/pipeline_final.csv
 2026-08-03 10:52:13 - INFO - === PIPELINE ETL FINALIZADO CON ÉXITO ===
+2026-08-06 12:02:05 - INFO - === INICIANDO EJECUCIÓN DEL PIPELINE ETL ===
+2026-08-06 12:02:05 - INFO - Iniciando extracción de datos desde la API...
+2026-08-06 12:02:06 - INFO - ✅ Datos extraídos correctamente de la fuente.
+2026-08-06 12:02:06 - INFO - Iniciando transformación de datos con Pandas...
+2026-08-06 12:02:06 - INFO - ✅ Transformación completada exitosamente.
+2026-08-06 12:02:06 - INFO - 🚀 Respaldo local guardado exitosamente en: datos_procesados/pipeline_final.csv
+2026-08-06 12:02:06 - INFO - === PIPELINE ETL FINALIZADO CON ÉXITO ===
+2026-08-06 12:06:09 - INFO - === INICIANDO EJECUCIÓN DEL PIPELINE ETL ===
+2026-08-06 12:06:09 - INFO - Iniciando extracción de datos desde la API...
+2026-08-06 12:06:09 - INFO - ✅ Datos extraídos correctamente de la fuente.
+2026-08-06 12:06:09 - INFO - Iniciando transformación de datos con Pandas...
+2026-08-06 12:06:09 - INFO -  Transformación completada exitosamente.
+2026-08-06 12:06:09 - INFO - Respaldo local guardado exitosamente en: datos_procesados/pipeline_final.csv
+2026-08-06 12:06:09 - CRITICAL - 💥 El pipeline ETL falló y no pudo completar la ejecución: name 'cargar_datos_postgresql' is not defined
+2026-08-06 12:07:55 - INFO - === INICIANDO EJECUCIÓN DEL PIPELINE ETL ===
+2026-08-06 12:07:55 - INFO - Iniciando extracción de datos desde la API...
+2026-08-06 12:07:55 - INFO - ✅ Datos extraídos correctamente de la fuente.
+2026-08-06 12:07:55 - INFO - Iniciando transformación de datos con Pandas...
+2026-08-06 12:07:55 - INFO -  Transformación completada exitosamente.
+2026-08-06 12:07:55 - INFO - Respaldo local guardado exitosamente en: datos_procesados/pipeline_final.csv
+2026-08-06 12:07:55 - CRITICAL - 💥 El pipeline ETL falló y no pudo completar la ejecución: name 'NOMBRE_TABLA_SQL' is not defined
+2026-08-06 12:10:04 - INFO - === INICIANDO EJECUCIÓN DEL PIPELINE ETL ===
+2026-08-06 12:10:04 - INFO - Iniciando extracción de datos desde la API...
+2026-08-06 12:10:04 - INFO - ✅ Datos extraídos correctamente de la fuente.
+2026-08-06 12:10:04 - INFO - Iniciando transformación de datos con Pandas...
+2026-08-06 12:10:04 - INFO -  Transformación completada exitosamente.
+2026-08-06 12:10:04 - INFO - Respaldo local guardado exitosamente en: datos_procesados/pipeline_final.csv
+2026-08-06 12:10:04 - CRITICAL - El pipeline ETL falló y no pudo completar la ejecución: name 'nombre_tabla' is not defined
+2026-08-06 12:13:36 - INFO - === INICIANDO EJECUCIÓN DEL PIPELINE ETL ===
+2026-08-06 12:13:36 - INFO - Iniciando extracción de datos desde la API...
+2026-08-06 12:13:36 - INFO - Datos extraídos correctamente de la fuente.
+2026-08-06 12:13:36 - INFO - Iniciando transformación de datos con Pandas...
+2026-08-06 12:13:36 - INFO - Transformación completada exitosamente.
+2026-08-06 12:13:36 - INFO - Respaldo local guardado exitosamente en: datos_procesados/pipeline_final.csv
+2026-08-06 12:13:36 - INFO - Iniciando carga a PostgreSQL en la tabla 'tareas_procesadas'...
+2026-08-06 12:13:36 - ERROR - Error al cargar datos en PostgreSQL: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-08-06 12:13:36 - CRITICAL - El pipeline ETL falló y no pudo completar la ejecución: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-08-06 12:19:37 - INFO - === INICIANDO EJECUCIÓN DEL PIPELINE ETL ===
+2026-08-06 12:19:37 - INFO - Iniciando extracción de datos desde la API...
+2026-08-06 12:19:37 - INFO - Datos extraídos correctamente de la fuente.
+2026-08-06 12:19:37 - INFO - Iniciando transformación de datos con Pandas...
+2026-08-06 12:19:37 - INFO - Transformación completada exitosamente.
+2026-08-06 12:19:37 - INFO - Respaldo local guardado exitosamente en: datos_procesados/pipeline_final.csv
+2026-08-06 12:19:37 - INFO - Iniciando carga a PostgreSQL en la tabla 'tareas_procesadas'...
+2026-08-06 12:19:37 - INFO - Datos cargados exitosamente en PostgreSQL (Tabla: tareas_procesadas).
+2026-08-06 12:19:37 - INFO - === PIPELINE ETL FINALIZADO CON ÉXITO ===
